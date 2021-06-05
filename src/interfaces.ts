@@ -14,7 +14,8 @@ export interface IBranchOptions {
 }
 
 export interface IBranchMixinMethods {
-  getBranch(): unknown;
+  initBranch(): void,
+  getBranch(): object;
   getRootName(): string;
   getBranchPath(): string;
   getBranchKeys(): string[];

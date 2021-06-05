@@ -2,7 +2,7 @@ import isEqual from "lodash.isequal";
 
 import { IBranchOptions, IBranchMixin, IBranchComponent } from "./interfaces";
 
-import { isValidBranchComponent } from "./typeGuards";
+import { isValidBranchComponent, isObject } from "./typeGuards";
 
 import { pickBranch, updateRootDataBranch } from "./rootDataStore";
 
@@ -13,15 +13,11 @@ const BranchMixin: IBranchMixin = {
     };
   },
   created() {
-    const rootName = (this as any).getRootName();
-    const branchPath = (this as any).getBranchPath();
-    const branchKeys = (this as any).getBranchKeys();
-
-    (this as any).branch = pickBranch({
-      root: rootName,
-      path: branchPath,
-      keys: branchKeys,
-    });
+    if (!isValidBranchComponent(this as any)) {
+      return;
+    }
+    const self: IBranchComponent = this as any as IBranchComponent;
+    self.initBranch();
   },
   watch: {
     branch: {
@@ -44,15 +40,37 @@ const BranchMixin: IBranchMixin = {
     },
   },
   methods: {
+    initBranch() {
+      if (!isValidBranchComponent(this as any)) {
+        return;
+      }
+      const self: IBranchComponent = this as any as IBranchComponent;
+
+      const pickedBranch = pickBranch({
+        root: self.getRootName(),
+        path: self.getBranchPath(),
+        keys: self.getBranchKeys(),
+      });
+
+      if (!isObject(pickedBranch)) {
+        self.branch = {};
+      }
+
+      self.branch = pickedBranch as object;
+    },
     getBranch() {
       const rootName = (this as any).getRootName();
       const branchPath = (this as any).getBranchPath();
       const branchKeys = (this as any).getBranchKeys();
-      return pickBranch({
+      const pickedBranch = pickBranch({
         root: rootName,
         path: branchPath,
         keys: branchKeys,
       });
+      if (!isObject(pickedBranch)) {
+        return {};
+      }
+      return pickedBranch as object;
     },
     getRootName() {
       return ((this as any).$options?.branch as IBranchOptions)?.root;
