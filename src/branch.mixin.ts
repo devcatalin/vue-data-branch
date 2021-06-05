@@ -24,11 +24,6 @@ const pickBranch = ({ root: rootName, path, keys }: IBranchOptions) => {
 };
 
 const BranchMixin: IBranchMixin = {
-  branch: {
-    root: "",
-    keys: [],
-    path: "",
-  },
   data() {
     return {
       branch: {},

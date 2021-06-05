@@ -22,7 +22,6 @@ export interface IBranchMixinMethods {
 }
 
 export interface IBranchMixin {
-  branch: IBranchOptions;
   created(): void;
   watch: {
     branch: {
