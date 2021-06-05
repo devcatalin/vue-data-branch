@@ -31,8 +31,7 @@ const BranchMixin: IBranchMixin = {
         if (!self.shouldUpdateBranch()) {
           return;
         }
-
-        const originalBranch: unknown = self.getBranch();
+        const originalBranch: object = self.getBranch();
         if (!isEqual(self.branch, originalBranch)) {
           updateRootDataBranch(self.$options.branch, self.branch);
         }
@@ -45,23 +44,20 @@ const BranchMixin: IBranchMixin = {
         return;
       }
       const self: IBranchComponent = this as any as IBranchComponent;
+      const branch = self.getBranch();
+
+      self.branch = branch;
+    },
+    getBranch() {
+      if (!isValidBranchComponent(this as any)) {
+        return {};
+      }
+      const self: IBranchComponent = this as any as IBranchComponent;
 
       const pickedBranch = pickBranch({
         root: self.getRootName(),
         path: self.getBranchPath(),
         keys: self.getBranchKeys(),
-      });
-
-      self.branch = pickedBranch;
-    },
-    getBranch() {
-      const rootName = (this as any).getRootName();
-      const branchPath = (this as any).getBranchPath();
-      const branchKeys = (this as any).getBranchKeys();
-      const pickedBranch = pickBranch({
-        root: rootName,
-        path: branchPath,
-        keys: branchKeys,
       });
 
       return pickedBranch;
@@ -70,10 +66,10 @@ const BranchMixin: IBranchMixin = {
       return ((this as any).$options?.branch as IBranchOptions)?.root;
     },
     getBranchKeys() {
-      return ((this as any).$options?.branch as IBranchOptions)?.keys;
+      return ((this as any).$options?.branch as IBranchOptions)?.keys || [];
     },
     getBranchPath() {
-      return ((this as any).$options?.branch as IBranchOptions)?.path;
+      return ((this as any).$options?.branch as IBranchOptions)?.path || "";
     },
     shouldUpdateBranch() {
       return true;

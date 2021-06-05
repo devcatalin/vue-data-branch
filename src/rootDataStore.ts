@@ -13,7 +13,7 @@ export function isValidRootName(value: string): value is keyof typeof dataByRoot
   return value in dataByRoot;
 }
 
-export const getRootData = (root: IRoot | string): unknown => {
+export const getRootData = (root: IRoot | string): object => {
   let rootName: string;
   if (typeof root === "string") {
     rootName = root;
@@ -59,14 +59,14 @@ export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, u
   Vue.set(dataByRoot, rootName, rootDataCopy);
 };
 
-export const pickBranch = ({ root: rootName, path, keys }: IBranchOptions) => {
+export const pickBranch = ({ root: rootName, path, keys }: IBranchOptions): object => {
   if (!isValidRootName(rootName)) {
     return {};
   }
 
   const rootData = getRootData(rootName);
   let pickedBranch = rootData;
-  if (path) {
+  if (path && path.trim() !== "") {
     pickedBranch = getObjectAtPath(rootData, path);
   }
   if (keys && keys.length > 0) {

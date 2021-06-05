@@ -9,12 +9,12 @@ export interface IRoot {
 
 export interface IBranchOptions {
   root: string;
-  path: string;
-  keys: string[];
+  path?: string;
+  keys?: string[];
 }
 
 export interface IBranchMixinMethods {
-  initBranch(): void,
+  initBranch(): void;
   getBranch(): object;
   getRootName(): string;
   getBranchPath(): string;
@@ -41,4 +41,3 @@ export interface IBranchComponent extends IBranchMixinMethods {
   };
   branch: object;
 }
-
