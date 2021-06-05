@@ -1,14 +1,27 @@
 {
   "name": "vue-data-branch",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Vue Plugin to access and mutate deeply nested state.",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc",
+    "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
+    "lint": "tslint -p tsconfig.json",
+    "prepare": "npm run build",
+    "preversion": "npm run lint",
+    "version": "npm run format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "keywords": [
+    "vue",
+    "data",
+    "nested",
+    "state",
+    "branch"
+  ],
+  "author": "C.H.",
+  "license": "MIT",
   "dependencies": {
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
@@ -17,5 +30,14 @@
     "lodash.pick": "^4.4.0",
     "lodash.set": "^4.3.2",
     "vue": "^2.6.12"
-  }
+  },
+  "devDependencies": {
+    "prettier": "^2.3.0",
+    "tslint": "^6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^4.3.2"
+  },
+  "files": [
+    "dist/**/*"
+  ]
 }

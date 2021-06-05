@@ -123,3 +123,5 @@ dist/
 # Temporary folders
 tmp/
 temp/
+
+/dist
