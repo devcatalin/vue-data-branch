@@ -3,6 +3,7 @@ import { IRoot, IBranchOptions } from "./interfaces";
 import setObjectAtPath from "lodash.set";
 import getObjectAtPath from "lodash.get";
 import cloneDeep from "lodash.clonedeep";
+import pickProperties from "lodash.pick";
 
 const dataByRoot = Vue.observable({});
 
@@ -51,4 +52,21 @@ export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, u
   }
 
   Vue.set(dataByRoot, rootName, rootDataCopy);
+};
+
+export const pickBranch = ({ root: rootName, path, keys }: IBranchOptions) => {
+  if (!isValidRootName(rootName)) {
+    return null;
+  }
+
+  const rootData = getRootData(rootName);
+  let pickedBranch = rootData;
+  if (path) {
+    pickedBranch = getObjectAtPath(rootData, path);
+  }
+  if (keys && keys.length > 0) {
+    pickedBranch = pickProperties(pickedBranch, keys);
+  }
+
+  return cloneDeep(pickedBranch);
 };
