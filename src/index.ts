@@ -1,2 +1,2 @@
-export {default as BranchPlugin} from "./branch.plugin";
-export {default as BranchMixin} from "./branch.mixin";
+export {default as BranchPlugin} from "./branchPlugin";
+export {default as BranchMixin} from "./branchMixin";
