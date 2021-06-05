@@ -5,7 +5,6 @@ import getObjectAtPath from "lodash.get";
 import cloneDeep from "lodash.clonedeep";
 import pickProperties from "lodash.pick";
 
-
 import { isObject } from "./typeGuards";
 
 const dataByRoot = Vue.observable({});
@@ -22,13 +21,16 @@ export const getRootData = (root: IRoot | string): unknown => {
     rootName = root.name;
   }
   if (!isValidRootName(rootName)) {
-    return null;
+    return {};
   }
   return dataByRoot[rootName];
 };
 
 export const insertRoot = (root: IRoot) => {
-  const initialData = root.initialData ? { ...root.initialData } : {};
+  let initialData = {};
+  if (isObject(root.initialData)) {
+    initialData = root.initialData;
+  }
   Vue.set(dataByRoot, root.name, initialData);
 };
 
