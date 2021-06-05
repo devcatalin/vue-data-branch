@@ -2,7 +2,7 @@ import isEqual from "lodash.isequal";
 
 import { IBranchOptions, IBranchMixin, IBranchComponent } from "./interfaces";
 
-import { isValidBranchComponent, isObject } from "./typeGuards";
+import { isValidBranchComponent } from "./typeGuards";
 
 import { pickBranch, updateRootDataBranch } from "./rootDataStore";
 
@@ -52,11 +52,7 @@ const BranchMixin: IBranchMixin = {
         keys: self.getBranchKeys(),
       });
 
-      if (!isObject(pickedBranch)) {
-        self.branch = {};
-      }
-
-      self.branch = pickedBranch as object;
+      self.branch = pickedBranch;
     },
     getBranch() {
       const rootName = (this as any).getRootName();
@@ -67,10 +63,8 @@ const BranchMixin: IBranchMixin = {
         path: branchPath,
         keys: branchKeys,
       });
-      if (!isObject(pickedBranch)) {
-        return {};
-      }
-      return pickedBranch as object;
+
+      return pickedBranch;
     },
     getRootName() {
       return ((this as any).$options?.branch as IBranchOptions)?.root;
