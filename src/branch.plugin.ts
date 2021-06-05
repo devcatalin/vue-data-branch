@@ -12,7 +12,7 @@ const BranchPlugin: PluginObject<BranchPluginOptions> = {
       throw new Error("VueDataBranch: no roots specified.");
     }
     const roots: IRoot[] = options.roots;
-    
+
     for (const root of roots) {
       insertRoot(root);
     }

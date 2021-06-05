@@ -21,7 +21,7 @@ export const getRootData = (root: IRoot | string): unknown => {
     return null;
   }
   return dataByRoot[rootName];
-}
+};
 
 export const insertRoot = (root: IRoot) => {
   const initialData = root.initialData ? { ...root.initialData } : {};
@@ -36,27 +36,19 @@ export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, u
   const rootData: object = dataByRoot[rootName];
   let rootDataCopy: object = cloneDeep(rootData);
 
-    if (
-      path !== undefined &&
-      path !== null &&
-      typeof path === "string"
-    ) {
-      const objectAtPath = getObjectAtPath(
-        rootData,
-        path
-      );
+  if (path !== undefined && path !== null && typeof path === "string") {
+    const objectAtPath = getObjectAtPath(rootData, path);
 
-      setObjectAtPath(rootDataCopy, path, {
-        ...(objectAtPath as object),
-        ...updatedBranch
-      });
-    } else {
-      rootDataCopy = {
-        ...(rootData as object),
-        ...updatedBranch
-      };
-    }
+    setObjectAtPath(rootDataCopy, path, {
+      ...(objectAtPath as object),
+      ...updatedBranch,
+    });
+  } else {
+    rootDataCopy = {
+      ...(rootData as object),
+      ...updatedBranch,
+    };
+  }
 
-    Vue.set(dataByRoot, rootName, rootDataCopy);
-}
-
+  Vue.set(dataByRoot, rootName, rootDataCopy);
+};

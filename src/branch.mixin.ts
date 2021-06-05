@@ -7,7 +7,6 @@ import { IBranchOptions, IBranchMixin, IBranchComponent, isValidBranchComponent 
 
 import { isValidRootName, getRootData, updateRootDataBranch } from "./rootData.store";
 
-
 const pickBranch = ({ root: rootName, path, keys }: IBranchOptions) => {
   if (!isValidRootName(rootName)) {
     return null;
@@ -53,7 +52,7 @@ const BranchMixin: IBranchMixin = {
         if (!isValidBranchComponent(this as any)) {
           return;
         }
-        const self: IBranchComponent = (this as any) as IBranchComponent;
+        const self: IBranchComponent = this as any as IBranchComponent;
 
         if (!self.shouldUpdateBranch()) {
           return;
@@ -69,13 +68,13 @@ const BranchMixin: IBranchMixin = {
   methods: {
     getBranch() {
       const rootName = (this as any).getRootName();
-    const branchPath = (this as any).getBranchPath();
-    const branchKeys = (this as any).getBranchKeys();
-    return pickBranch({
-      root: rootName,
-      path: branchPath,
-      keys: branchKeys,
-    });
+      const branchPath = (this as any).getBranchPath();
+      const branchKeys = (this as any).getBranchKeys();
+      return pickBranch({
+        root: rootName,
+        path: branchPath,
+        keys: branchKeys,
+      });
     },
     getRootName() {
       return ((this as any).$options?.branch as IBranchOptions)?.root;
