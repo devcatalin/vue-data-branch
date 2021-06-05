@@ -1,5 +1,5 @@
 import Vue from "vue";
-import { IRoot, IBranchOptions } from "./typings";
+import { IRoot, IBranchOptions } from "./interfaces";
 import setObjectAtPath from "lodash.set";
 import getObjectAtPath from "lodash.get";
 import cloneDeep from "lodash.clonedeep";

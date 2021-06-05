@@ -41,16 +41,3 @@ export interface IBranchComponent extends IBranchMixinMethods {
   branch: object;
 }
 
-export function isValidBranchOptions(value: IBranchOptions): value is IBranchOptions {
-  if (value.root && value.path && value.keys) {
-    return true;
-  }
-  return false;
-}
-
-export function isValidBranchComponent(value: unknown): value is IBranchComponent {
-  if ((value as IBranchComponent).branch && isValidBranchOptions((value as IBranchComponent).$options?.branch)) {
-    return true;
-  }
-  return false;
-}

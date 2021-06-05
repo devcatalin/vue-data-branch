@@ -3,7 +3,9 @@ import cloneDeep from "lodash.clonedeep";
 import pickProperties from "lodash.pick";
 import isEqual from "lodash.isequal";
 
-import { IBranchOptions, IBranchMixin, IBranchComponent, isValidBranchComponent } from "./typings";
+import { IBranchOptions, IBranchMixin, IBranchComponent } from "./interfaces";
+
+import { isValidBranchComponent } from "./typeGuards";
 
 import { isValidRootName, getRootData, updateRootDataBranch } from "./rootData.store";
 
@@ -20,6 +22,7 @@ const pickBranch = ({ root: rootName, path, keys }: IBranchOptions) => {
   if (keys && keys.length > 0) {
     pickedBranch = pickProperties(pickedBranch, keys);
   }
+
   return cloneDeep(pickedBranch);
 };
 

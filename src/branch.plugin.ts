@@ -1,5 +1,5 @@
 import { PluginObject } from "vue";
-import { IRoot } from "./typings";
+import { IRoot } from "./interfaces";
 import { insertRoot } from "./rootData.store";
 
 type BranchPluginOptions = {
