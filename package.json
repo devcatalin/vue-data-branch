@@ -23,6 +23,11 @@
   "author": "C.H.",
   "license": "MIT",
   "dependencies": {
+    "@types/lodash.clonedeep": "^4.5.6",
+    "@types/lodash.get": "^4.4.6",
+    "@types/lodash.isequal": "^4.5.5",
+    "@types/lodash.pick": "^4.4.6",
+    "@types/lodash.set": "^4.3.6",
     "lodash.clonedeep": "^4.5.0",
     "lodash.debounce": "^4.0.8",
     "lodash.get": "^4.4.2",
