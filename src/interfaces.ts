@@ -30,7 +30,10 @@ export interface IBranchMixin {
       handler(): void;
     };
   };
-  data(): { branch: object };
+  data(): { branch: object, originalBranch: object };
+  computed: {
+    syncedBranch(): object
+  },
   $options?: unknown;
   methods: IBranchMixinMethods;
 }
@@ -40,4 +43,5 @@ export interface IBranchComponent extends IBranchMixinMethods {
     branch: IBranchOptions;
   };
   branch: object;
+  originalBranch: object;
 }

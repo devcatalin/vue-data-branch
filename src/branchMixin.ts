@@ -1,4 +1,5 @@
 import isEqual from "lodash.isequal";
+import cloneDeep from "lodash.clonedeep";
 
 import { IBranchOptions, IBranchMixin, IBranchComponent } from "./interfaces";
 
@@ -10,6 +11,7 @@ const BranchMixin: IBranchMixin = {
   data() {
     return {
       branch: {},
+      originalBranch: {}
     };
   },
   created() {
@@ -18,6 +20,13 @@ const BranchMixin: IBranchMixin = {
     }
     const self: IBranchComponent = this as any as IBranchComponent;
     self.initBranch();
+  },
+  computed: {
+    syncedBranch() {
+      const self: IBranchComponent = this as any as IBranchComponent;
+      const branch = self.getBranch();
+      return branch;
+    }
   },
   watch: {
     branch: {
@@ -31,9 +40,10 @@ const BranchMixin: IBranchMixin = {
         if (!self.shouldUpdateBranch()) {
           return;
         }
-        const originalBranch: object = self.getBranch();
-        if (!isEqual(self.branch, originalBranch)) {
+
+        if (!isEqual(self.branch, self.originalBranch)) {
           updateRootDataBranch(self.$options.branch, self.branch);
+          self.originalBranch = cloneDeep(self.branch);
         }
       },
     },
@@ -46,7 +56,8 @@ const BranchMixin: IBranchMixin = {
       const self: IBranchComponent = this as any as IBranchComponent;
       const branch = self.getBranch();
 
-      self.branch = branch;
+      self.branch = cloneDeep(branch);
+      self.originalBranch = cloneDeep(branch);
     },
     getBranch() {
       if (!isValidBranchComponent(this as any)) {
