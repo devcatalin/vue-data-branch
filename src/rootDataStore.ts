@@ -1,4 +1,4 @@
-import Vue from "vue";
+import { VueConstructor } from "vue";
 import { IRoot, IBranchOptions } from "./interfaces";
 import setObjectAtPath from "lodash.set";
 import getObjectAtPath from "lodash.get";
@@ -7,10 +7,30 @@ import pickProperties from "lodash.pick";
 
 import { isObject } from "./typeGuards";
 
-const dataByRoot = Vue.observable({});
+let Vue: VueConstructor;
 
-export function isValidRootName(value: string): value is keyof typeof dataByRoot {
-  return value in dataByRoot;
+let state: {
+  dataByRoot: object
+} = {
+  dataByRoot: {}
+};
+
+export function makeState(VueInstance: VueConstructor) {
+  Vue = VueInstance;
+  state = (Vue as any).observable({
+    dataByRoot: {},
+    testData: {
+      counter: 0
+    }
+  });
+}
+
+export function isValidRootName(value: string): value is keyof typeof state.dataByRoot {
+  return value in state.dataByRoot;
+}
+
+export const getDataByRoot = () => {
+  return state.dataByRoot;
 }
 
 export const getRootData = (root: IRoot | string): object => {
@@ -23,7 +43,7 @@ export const getRootData = (root: IRoot | string): object => {
   if (!isValidRootName(rootName)) {
     return {};
   }
-  return dataByRoot[rootName];
+  return state.dataByRoot[rootName];
 };
 
 export const insertRoot = (root: IRoot) => {
@@ -31,7 +51,7 @@ export const insertRoot = (root: IRoot) => {
   if (isObject(root.initialData)) {
     initialData = root.initialData;
   }
-  Vue.set(dataByRoot, root.name, initialData);
+  Vue.set(state.dataByRoot, root.name, initialData);
 };
 
 export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, updatedBranch: object) => {
@@ -39,11 +59,11 @@ export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, u
     return;
   }
 
-  const rootData: object = dataByRoot[rootName];
+  const rootData: object = state.dataByRoot[rootName];
   let rootDataCopy: object = cloneDeep(rootData);
 
   if (path !== undefined && path !== null && typeof path === "string") {
-    const objectAtPath = getObjectAtPath(rootData, path);
+    const objectAtPath = getObjectAtPath(rootDataCopy, path);
 
     setObjectAtPath(rootDataCopy, path, {
       ...(objectAtPath as object),
@@ -51,12 +71,12 @@ export const updateRootDataBranch = ({ root: rootName, path }: IBranchOptions, u
     });
   } else {
     rootDataCopy = {
-      ...(rootData as object),
+      ...(rootDataCopy as object),
       ...updatedBranch,
     };
   }
 
-  Vue.set(dataByRoot, rootName, rootDataCopy);
+  Vue.set(state.dataByRoot, rootName, rootDataCopy);
 };
 
 export const pickBranch = ({ root: rootName, path, keys }: IBranchOptions): object => {
@@ -77,5 +97,5 @@ export const pickBranch = ({ root: rootName, path, keys }: IBranchOptions): obje
     return {};
   }
 
-  return cloneDeep(pickedBranch);
+  return pickedBranch;
 };

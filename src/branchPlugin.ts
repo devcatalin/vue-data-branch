@@ -1,6 +1,6 @@
 import { PluginObject } from "vue";
 import { IRoot } from "./interfaces";
-import { insertRoot } from "./rootDataStore";
+import { makeState, insertRoot } from "./rootDataStore";
 
 type BranchPluginOptions = {
   roots: IRoot[];
@@ -11,6 +11,8 @@ const BranchPlugin: PluginObject<BranchPluginOptions> = {
     if (!options) {
       throw new Error("VueDataBranch: no roots specified.");
     }
+    makeState(Vue);
+
     const roots: IRoot[] = options.roots;
 
     for (const root of roots) {
