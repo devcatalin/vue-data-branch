@@ -7,28 +7,47 @@ import { isValidBranchComponent } from "./typeGuards";
 
 import { pickBranch, updateRootDataBranch } from "./rootDataStore";
 
+const getSelf = (thisArg: any) => {
+  if (!isValidBranchComponent(thisArg)) {
+    return null;
+  }
+  const self: IBranchComponent = thisArg as IBranchComponent;
+  return self;
+};
+
 const BranchMixin: IBranchMixin = {
   data() {
     return {
       branch: {},
-      originalBranch: {}
+      originalBranch: {},
     };
   },
   created() {
-    if (!isValidBranchComponent(this as any)) {
+    const self = getSelf(this);
+    if (!self) {
       return;
     }
-    const self: IBranchComponent = this as any as IBranchComponent;
     self.initBranch();
   },
   computed: {
     syncedBranch() {
-      const self: IBranchComponent = this as any as IBranchComponent;
-      const branch = self.getBranch();
-      return branch;
-    }
+      const self = getSelf(this);
+      if (!self) {
+        return {};
+      }
+      return self.getBranch();
+    },
   },
   watch: {
+    syncedBranch() {
+      const self = getSelf(this);
+      if (!self) {
+        return;
+      }
+      if (!isEqual(self.originalBranch, self.syncedBranch)) {
+        self.handleConflictSync();
+      }
+    },
     branch: {
       deep: true,
       handler() {
@@ -50,20 +69,20 @@ const BranchMixin: IBranchMixin = {
   },
   methods: {
     initBranch() {
-      if (!isValidBranchComponent(this as any)) {
+      const self = getSelf(this);
+      if (!self) {
         return;
       }
-      const self: IBranchComponent = this as any as IBranchComponent;
       const branch = self.getBranch();
 
       self.branch = cloneDeep(branch);
       self.originalBranch = cloneDeep(branch);
     },
     getBranch() {
-      if (!isValidBranchComponent(this as any)) {
+      const self = getSelf(this);
+      if (!self) {
         return {};
       }
-      const self: IBranchComponent = this as any as IBranchComponent;
 
       const pickedBranch = pickBranch({
         root: self.getRootName(),
@@ -84,6 +103,21 @@ const BranchMixin: IBranchMixin = {
     },
     shouldUpdateBranch() {
       return true;
+    },
+    handleConflictSync() {
+      const self = getSelf(this);
+      if (!self) {
+        return;
+      }
+      self.syncBranch();
+    },
+    syncBranch() {
+      const self = getSelf(this);
+      if (!self) {
+        return;
+      }
+      self.branch = cloneDeep(self.syncedBranch);
+      self.originalBranch = cloneDeep(self.syncedBranch);
     },
   },
 };

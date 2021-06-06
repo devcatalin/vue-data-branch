@@ -20,6 +20,8 @@ export interface IBranchMixinMethods {
   getBranchPath(): string;
   getBranchKeys(): string[];
   shouldUpdateBranch(): boolean;
+  handleConflictSync(): void;
+  syncBranch(): void;
 }
 
 export interface IBranchMixin {
@@ -29,6 +31,7 @@ export interface IBranchMixin {
       deep: boolean;
       handler(): void;
     };
+    syncedBranch(): void
   };
   data(): { branch: object, originalBranch: object };
   computed: {
@@ -44,4 +47,5 @@ export interface IBranchComponent extends IBranchMixinMethods {
   };
   branch: object;
   originalBranch: object;
+  syncedBranch: object;
 }
