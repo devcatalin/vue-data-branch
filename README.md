@@ -48,6 +48,7 @@ Vue.use(BranchPlugin, { roots: [
 import { BranchMixin } from "vue-data-branch";
 
 export default {
+  mixins: [BranchMixin],
   branch: {
     root: "someName",
     path: "some.nested.property",
