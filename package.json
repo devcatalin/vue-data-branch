@@ -1,7 +1,7 @@
 {
   "name": "vue-data-branch",
   "version": "1.0.0",
-  "description": "Vue Plugin to access and mutate deeply nested state.",
+  "description": "Vue Plugin to access and mutate global state using branches.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
