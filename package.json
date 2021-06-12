@@ -15,10 +15,16 @@
   },
   "keywords": [
     "vue",
+    "plugin",
+    "mixin",
     "data",
     "nested",
+    "global",
     "state",
-    "branch"
+    "roots",
+    "branch",
+    "path",
+    "keys"
   ],
   "author": "C.H.",
   "license": "MIT",
