@@ -5,7 +5,7 @@ export function isObject(value: any): value is object {
 }
 
 export function isValidBranchOptions(value: IBranchOptions): value is IBranchOptions {
-  if ((value.root && value.path && value.keys) || (value.root)) {
+  if ((value.root && value.path && value.keys) || value.root) {
     return true;
   }
   return false;

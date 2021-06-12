@@ -10,9 +10,9 @@ import { isObject } from "./typeGuards";
 let Vue: VueConstructor;
 
 let state: {
-  dataByRoot: object
+  dataByRoot: object;
 } = {
-  dataByRoot: {}
+  dataByRoot: {},
 };
 
 export function makeState(VueInstance: VueConstructor) {
@@ -20,8 +20,8 @@ export function makeState(VueInstance: VueConstructor) {
   state = (Vue as any).observable({
     dataByRoot: {},
     testData: {
-      counter: 0
-    }
+      counter: 0,
+    },
   });
 }
 
@@ -31,7 +31,7 @@ export function isValidRootName(value: string): value is keyof typeof state.data
 
 export const getDataByRoot = () => {
   return state.dataByRoot;
-}
+};
 
 export const getRootData = (root: IRoot | string): object => {
   let rootName: string;

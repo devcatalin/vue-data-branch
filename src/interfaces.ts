@@ -31,12 +31,12 @@ export interface IBranchMixin {
       deep: boolean;
       handler(): void;
     };
-    syncedBranch(): void
+    syncedBranch(): void;
   };
-  data(): { branch: object, originalBranch: object };
+  data(): { branch: object; originalBranch: object };
   computed: {
-    syncedBranch(): object
-  },
+    syncedBranch(): object;
+  };
   $options?: unknown;
   methods: IBranchMixinMethods;
 }
